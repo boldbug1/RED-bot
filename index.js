@@ -48,6 +48,10 @@ function ticketLine(t) {
 
 const commands = [
   new SlashCommandBuilder()
+    .setName("redkt")
+    .setDescription("The system behind how RED verifies and governs knowledge across nodes"),
+
+  new SlashCommandBuilder()
     .setName("what")
     .setDescription(`What is ${cfg.project.name}?`),
 
@@ -172,6 +176,14 @@ client.on("interactionCreate", async (interaction) => {
       embeds: [embed(`🛠️ Tech Stack — ${cfg.project.name}`, cfg.project.stack)],
     });
   }
+
+  // ── /redknowledgetree ────────────────────────────────────────────
+ if (commandName === "redkt") {
+  return interaction.reply({
+    embeds: [embed(`🌲 RED Knowledge Tree`, cfg.project.redkt)],
+  });
+}
+
 
   // ── /tasks ────────────────────────────────────────────
   if (commandName === "tasks") {
