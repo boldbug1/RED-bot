@@ -1,0 +1,14 @@
+{
+  "counter": 1,
+  "tickets": [
+    {
+      "id": "T-001",
+      "name": "try red",
+      "status": "open",
+      "authorId": "1054257963864424518",
+      "authorTag": "boldbug",
+      "createdAt": "2026-06-29T16:45:52.918Z",
+      "closedAt": null
+    }
+  ]
+}
