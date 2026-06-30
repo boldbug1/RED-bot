@@ -279,6 +279,8 @@ client.on("interactionCreate", async (interaction) => {
       const ticket = store.create(name, member.id, member.user.tag);
       const guild = interaction.guild;
 
+      await interaction.deferReply();
+
       try {
         const category = await getOrCreateCategory(guild, "Tickets");
         const channelName = ticket.id.toLowerCase().replace(/[^a-z0-9-]/g, "");
@@ -308,7 +310,7 @@ client.on("interactionCreate", async (interaction) => {
         store.setChannelId(ticket.id, channel.id);
         const pts = Points.addPoints(member.id, member.user.tag, 2);
 
-        return interaction.reply({
+        return interaction.editReply({
           embeds: [
             embed(
               "🔴 Ticket Created",
@@ -319,7 +321,7 @@ client.on("interactionCreate", async (interaction) => {
         });
       } catch (err) {
         console.error("Failed to create ticket channel:", err);
-        return interaction.reply({
+        return interaction.editReply({
           embeds: [
             embed(
               "🔴 Ticket Created",
@@ -351,13 +353,15 @@ client.on("interactionCreate", async (interaction) => {
         });
       }
 
+      await interaction.deferReply();
+
       const ticket = store.complete(query);
       const pts = Points.addPoints(targetUser.id, targetUser.tag, 5);
 
       const channel = interaction.guild.channels.cache.get(ticket.channelId);
       await moveToReadOnlyCategory(interaction.guild, channel, "Archived Tickets");
 
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [
           embed(
             "✅ Ticket Completed",
@@ -387,12 +391,14 @@ client.on("interactionCreate", async (interaction) => {
         });
       }
 
+      await interaction.deferReply();
+
       const ticket = store.remove(query);
 
       const channel = interaction.guild.channels.cache.get(ticket.channelId);
       await moveToReadOnlyCategory(interaction.guild, channel, "Deleted Tickets");
 
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [
           embed(
             "🗑️ Ticket Deleted",
