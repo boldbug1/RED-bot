@@ -21,7 +21,7 @@ function padId(n) {
 }
 
 // ── Create ────────────────────────────────────────────────
-function create(name, authorId, authorTag) {
+function create(name, authorId, authorTag, channelId) {
   const data = load();
   data.counter += 1;
   const ticket = {
@@ -30,6 +30,7 @@ function create(name, authorId, authorTag) {
     status: "open",       // open | complete
     authorId,
     authorTag,
+    channelId: channelId || null,
     createdAt: new Date().toISOString(),
     closedAt: null,
   };
@@ -88,4 +89,13 @@ function list(filter = "all") {
   return tickets;
 }
 
-module.exports = { create, find, complete, remove, list };
+function setChannelId(ticketId, channelId) {
+  const data = load();
+  const t = data.tickets.find((t) => t.id === ticketId);
+  if (!t) return null;
+  t.channelId = channelId;
+  save(data);
+  return t;
+}
+
+module.exports = { create, find, complete, remove, list, setChannelId };
